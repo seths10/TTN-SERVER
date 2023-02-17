@@ -1,0 +1,99 @@
+<html>
+  <head>
+    <title>Bus Tracking</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="initial-scale=1.0,
+	width=device-width"
+    />
+    <script
+      src="https://js.api.here.com/v3/3.1/mapsjs-core.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <script
+      src="https://js.api.here.com/v3/3.1/mapsjs-service.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <script
+      src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://js.api.here.com/v3/3.1/mapsjs-ui.css"
+    />
+
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100% 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1 id="displayTTNData" style="text-align: center">Data</h1>
+    <div>
+      Latitude:
+      <p id="latitude">Lat</p>
+
+      Longitude:
+      <p id="longitude">Long</p>
+    </div>
+
+    <div style="width: 640px; height: 480px" id="mapContainer"></div>
+
+    <!-- <button id = "buttonRequestData" onclick="requestGetDataAfterATime()"> Request data</button> -->
+  </body>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/processdata.js"></script>
+  <script type="text/javascript" charset="utf-8">
+    var latitudeElement = document.getElementById("latitude");
+    var longitudeElement = document.getElementById("longitude");
+
+    // Extract the latitude and longitude values
+    var latitude = parseFloat(latitudeElement.innerText);
+    var longitude = parseFloat(longitudeElement.innerText);
+
+    //Initialize the Platform object:
+    var platform = new H.service.Platform({
+      apikey: "{cYYEimE6Ytmn216meTLlkvkFxiWtChieGrPz0GlXV4Q}",
+    });
+
+    // Get the default map types from the Platform object:
+    var defaultLayers = platform.createDefaultLayers();
+
+    // Instantiate the map:
+    var map = new H.Map(
+      document.getElementById("mapContainer"),
+      defaultLayers.vector.normal.map,
+      {
+        zoom: 10,
+        center: { lat: latitude, lng: longitude },
+      }
+    );
+
+    // Create the default UI:
+    var ui = H.ui.UI.createDefault(map, defaultLayers);
+    // ui.getControl("zoom").setDisabled(false);
+
+    var mapSettings = ui.getControl("mapsettings");
+    var zoom = ui.getControl("zoom");
+    var scalebar = ui.getControl("scalebar");
+
+    mapSettings.setAlignment("top-left");
+    zoom.setAlignment("top-left");
+    scalebar.setAlignment("top-left");
+  </script>
+</html>
